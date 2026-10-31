@@ -744,12 +744,11 @@ body.paper-modal-open { overflow:hidden; }
       <p class="research-venue">Under review · targeting CHI 2027</p>
     </article>
 
-    <article class="research-card" data-area="ai" data-type="review" data-first-author="yes" data-paper-action="under-review" tabindex="0" role="button" aria-label="Request under-review manuscript: Memory use and personalization in AI assistants">
-      <div class="research-card-top"><span class="research-area-tag ai-tag">Human-Centered AI</span><span class="research-type-tag">Under Review</span><span class="first-author-badge">First Author</span></div>
-      <p class="research-working-title-note">[Working title during blind review]</p>
-      <h2>Memory use and personalization in AI assistants</h2>
+    <article class="research-card" data-area="ai" data-type="conference" data-first-author="yes" data-paper-action="request" tabindex="0" role="button" aria-label="Request manuscript: Memory Availability Is Not Memory Use: Why Long-Term Dialogue Agents Need a Memory Use Policy">
+      <div class="research-card-top"><span class="research-area-tag ai-tag">Human-Centered AI</span><span class="research-type-tag">Conference Paper</span><span class="first-author-badge">First Author</span></div>
+      <h2>Memory Availability Is Not Memory Use: Why Long-Term Dialogue Agents Need a Memory Use Policy</h2>
       <p class="research-authors">Una Joh &amp; Bo Zhang</p>
-      <p class="research-venue">Under review · targeting EACL 2027</p>
+      <p class="research-venue">EACL 2027 · committed</p>
     </article>
 
     <article class="research-card" data-area="social-science" data-type="journal" data-first-author="yes" data-paper-url="https://doi.org/10.1080/1369118X.2025.2590556" data-paper-action="public" tabindex="0" role="link" aria-label="Open paper: Climate communication in the stormy transition of Twitter to X">
@@ -1039,7 +1038,7 @@ body.paper-modal-open { overflow:hidden; }
     const cue = document.createElement('span');
     cue.className = 'research-card-cue';
     const action = card.dataset.paperAction;
-    cue.textContent = action === 'public' ? 'OPEN PAPER ↗' : action === 'under-review' ? 'REQUEST A COPY →' : 'AVAILABILITY →';
+    cue.textContent = action === 'public' ? 'OPEN PAPER ↗' : (action === 'under-review' || action === 'request') ? 'REQUEST A COPY →' : 'AVAILABILITY →';
     cue.setAttribute('aria-hidden', 'true');
     card.appendChild(cue);
   };
@@ -1057,11 +1056,13 @@ body.paper-modal-open { overflow:hidden; }
     lastTrigger = card;
     const title = card.querySelector('h2')?.textContent?.trim() || 'This work';
     const kind = card.dataset.paperAction;
-    modalTitle.textContent = kind === 'under-review' ? 'Manuscript available on request' : 'Public link coming soon';
+    modalTitle.textContent = (kind === 'under-review' || kind === 'request') ? 'Manuscript available on request' : 'Public link coming soon';
     modalPaper.textContent = title;
     modalCopy.textContent = kind === 'under-review'
       ? 'This manuscript is currently under review, so I am not sharing it publicly. If you would like to read it, please email me and I would be happy to send you a copy.'
-      : 'This work is forthcoming and does not have a public paper link yet. I will add the link when it becomes available. If you would like a copy in the meantime, please email me.';
+      : kind === 'request'
+        ? 'This manuscript has been committed to EACL 2027 and does not have a public paper link yet. If you would like to read it, please email me and I would be happy to send you a copy.'
+        : 'This work is forthcoming and does not have a public paper link yet. I will add the link when it becomes available. If you would like a copy in the meantime, please email me.';
     modalEmail.textContent = 'Copy email';
     modalEmailStatus.textContent = '';
     modal.hidden = false;
